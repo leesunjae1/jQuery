@@ -1,0 +1,14 @@
+<script src ='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+<script>
+$(() => {
+   console.log($('h1').css('font-size')) //읽기
+   console.log($('h1.big').css('font-size', '3rem')) //쓰기
+   $('h1.big').css({
+        'font-size': '4rem', //한 단어가 아니라 ''붙여야한다
+        color: 'red'
+   }) 
+})
+</script>
+
+<h1>HELLO</h1>
+<h1 class='big'>WORLD</h1>
