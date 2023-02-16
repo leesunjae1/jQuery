@@ -8,11 +8,20 @@ $(() => {
             url: '2.data.json',
             success: (data) => {
                 // table에 data를 채워라.
-                $(table) = '<tr>'
-                  for()
+                let fruits = data.fruits
+                let fruit, col, val, tr, td
 
-                  for()
-                $('#tbody').append(table)       
+                for(let row in fruits) {
+                    fruit = fruits[row]
+                    tr = table.find('tr').eq(row)
+
+                    col = 0
+                    for(let key in fruit) {
+                        val = fruit[key]
+                        td = tr.find('td').eq(col++)
+                        td.text(val)
+                    }
+                }   
             }
         })
     })
