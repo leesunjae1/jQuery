@@ -9,10 +9,71 @@
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <script>
     $(() => {
-       $('button').eq(0).click(() => $())
-        
-     })
-    </script>
+        $('tbody tr').length || $('tbody').html('<td colspan="4" class="text-center">노동자가 없습니다.</td>')
+
+let laborerSeq = 1
+
+let emptyInputModal =  () => {
+    $('#emptyInputModal').show().siblings().hide()
+    $('#errorModal').show().siblings().hide()
+    $('#modal').modal("show")
+}
+
+let unCheckedModal = () => {
+    $('#unCheckedModal').show().siblings().hide()
+    $('#errorModal').show().siblings().hide()
+    $('#modal').modal("show")
+}
+
+$('button.btn-primary').eq(0).click(() => {
+    if($(':text').val() && $('#hireDate').val()) {
+        let items = []
+        items.push(`<td><input type="radio" name="selectLaborer" value="${laborerSeq}"/></td>`)
+        items.push(`<td>${laborerSeq++}</td>`)
+        items.push(`<td>${$(':text').val()}</td>`)
+        items.push(`<td>${$('#hireDate').val()}</td>`)
+
+        $('tbody tr').length ? 
+        $('tbody').append(`<tr>${items.join('')}</tr>`)
+        .find('tr').last().insertBefore($('tr').eq(1)) :
+        $('tbody').html(`<tr>${items.join('')}</tr>`)
+    } else emptyInputModal()
+    $(':text').val('')
+    $('#hireDate').val('')
+})
+
+$('button.btn-success').click(() => {
+    let checked = $('[name="selectLaborer"]:checked')
+
+    if($(':text').val() && $('#hireDate').val()) {
+        let items = []
+        items.push(`<td><input type="radio" name="selectLaborer" value="${checked.val()}"/></td>`)
+        items.push(`<td>${checked.val()}</td>`)
+        items.push(`<td>${$(':text').val()}</td>`)
+        items.push(`<td>${$('#hireDate').val()}</td>`)
+
+        $(checked).parent().parent().html(`${items.join('')}`)
+    } else if(checked.length == 0) unCheckedModal()
+    else emptyInputModal()
+
+    $(':text').val('')
+    $('#hireDate').val('')
+})
+
+$('button.btn-primary').eq(1).click((e) => {
+    let checked = $('[name="selectLaborer"]:checked')
+    
+    checked.parent().parent().remove().length ?
+    $('[data-bs-dismiss="modal"]').eq(0).click() :
+    unCheckedModal()
+})
+
+$('button.btn-danger').click(() => {
+    $('#delLaborerModal').show().siblings().hide()
+    $('.modal-footer button').show().eq(2).hide()
+})
+})
+</script>
 <title></title>
 <style>
     
@@ -72,18 +133,6 @@
                 <th>입사일</th>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type='radio'></td>
-                    <td>12</td>
-                    <td>최한석</td>
-                    <td>2025-12-12</td>
-                </tr>
-                <tr>
-                    <td><input type='radio'></td>
-                    <td>13</td>
-                    <td>한아름</td>
-                    <td>2025-05-05</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -97,6 +146,8 @@
                 </div>
                 <div class='modal-body'>
                     <p>노동자를 삭제하시겠습니까?</p>
+                    <p id='emptyInputModal'>노동자명과 입사입을 입력하세요.</p>
+                    <p id='unCheckedModal'>노동자를 선택하세요.</p>
                 </div>
                 <div class='modal-footer'>
                     <button type='button' class='btn btn-secondary'data-bs-dismiss='modal'>아니요</button>
